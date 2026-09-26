@@ -1,0 +1,136 @@
+{
+  "name": "gifdeck",
+  "displayName": "GifDeck",
+  "description": "Superpone GIFs, WebP o video en la ventana de VS Code, sin ocupar espacio en el layout.",
+  "version": "0.0.1",
+  "publisher": "lagmaster34",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lagmaster34/gifdeck"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "gif",
+    "overlay",
+    "background",
+    "decoration",
+    "custom"
+  ],
+  "main": "./out/extension.js",
+  "extensionKind": [
+    "ui"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "gifdeck.enable",
+        "title": "GifDeck: Activar overlay"
+      },
+      {
+        "command": "gifdeck.disable",
+        "title": "GifDeck: Desactivar overlay"
+      },
+      {
+        "command": "gifdeck.reapply",
+        "title": "GifDeck: Reaplicar parche"
+      },
+      {
+        "command": "gifdeck.pickMedia",
+        "title": "GifDeck: Elegir medio"
+      }
+    ],
+    "configuration": {
+      "title": "GifDeck",
+      "properties": {
+        "gifdeck.mediaPath": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Ruta absoluta al GIF, WebP, APNG, PNG, WebM o MP4 que se superpone. GifDeck no incluye ningun medio, asi que sin esto no hay nada que mostrar: usa el comando **GifDeck: Elegir medio** para rellenarlo con un selector de archivos. **WebM y WebP pesan mucho menos y consumen mucha menos CPU que un GIF.**"
+        },
+        "gifdeck.position": {
+          "type": "string",
+          "enum": [
+            "bottom-right",
+            "bottom-left",
+            "top-right",
+            "top-left"
+          ],
+          "default": "bottom-right",
+          "description": "Esquina donde se ancla el overlay."
+        },
+        "gifdeck.width": {
+          "type": "number",
+          "default": 260,
+          "markdownDescription": "Ancho **maximo** en pixeles. La altura se calcula por proporcion. Con `gifdeck.scaling` en `none` nunca se supera el tamano natural del archivo, asi que un medio mas pequeno que este valor se dibuja a su tamano real."
+        },
+        "gifdeck.scaling": {
+          "type": "string",
+          "enum": [
+            "none",
+            "integer"
+          ],
+          "enumDescriptions": [
+            "Nunca amplia por encima del tamano natural del archivo. Maxima fidelidad.",
+            "Amplia solo en multiplos enteros (2x, 3x...) y usa interpolacion nearest."
+          ],
+          "default": "none",
+          "markdownDescription": "Como se ajusta el medio a `#gifdeck.width#`.\n\n- `none`: no amplia nunca. Ampliar por un factor fraccionario introduce una costura periodica que se ve como franjas, ademas de suavizar la imagen.\n- `integer`: amplia a 2x, 3x... con bordes duros.\n\n**Los archivos pequenos se ven mejor con `integer`.** Un GIF de 128 px a 2x llena 256 px sin una sola interpolacion, mientras que `none` lo dejaria a 128 px."
+        },
+        "gifdeck.opacity": {
+          "type": "number",
+          "default": 0.85,
+          "minimum": 0.05,
+          "maximum": 1,
+          "description": "Opacidad del overlay."
+        },
+        "gifdeck.offset": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "default": [
+            16,
+            16
+          ],
+          "description": "Separación [horizontal, vertical] en píxeles desde la esquina."
+        },
+        "gifdeck.avoidStatusBar": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Sube el overlay por encima de la barra de estado cuando esta anclado abajo. Mide su altura real en cada cambio de tamano o de zoom, en vez de asumir un valor fijo, y no reserva nada si la tienes oculta."
+        },
+        "gifdeck.zIndex": {
+          "type": "number",
+          "default": 100,
+          "description": "Orden de apilamiento. Súbelo si algo del workbench lo tapa."
+        },
+        "gifdeck.hideOnHover": {
+          "type": "boolean",
+          "default": false,
+          "description": "Desvanece el overlay cuando el puntero entra en su zona."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm test",
+    "vscode:uninstall": "node ./out/uninstall.js",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "test": "npm run compile && node test/run.js"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.43",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.3.3"
+  }
+}

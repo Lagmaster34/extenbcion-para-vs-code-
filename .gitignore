@@ -1,0 +1,8 @@
+node_modules/
+out/
+*.vsix
+.DS_Store
+
+# Medios locales. GifDeck no empaqueta ninguno y cada usuario usa los suyos, asi
+# que aqui solo hay archivos personales que no deben acabar en el repositorio.
+media/

@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "Node16",
+    "moduleResolution": "Node16",
+    "lib": ["ES2022"],
+
+    // Declarados a proposito. Sin "types", TypeScript auto-incluye todo
+    // node_modules/@types, que es lo que hace tsc en la linea de comandos. El
+    // servidor del editor, si arranca antes de resolver el proyecto, puede
+    // quedarse sin ellos y reportar TS2591 sobre 'fs', 'path' o 'Buffer' en
+    // archivos que compilan perfectamente.
+    //
+    // OJO: al fijar esta lista se desactiva la inclusion automatica. Si anades un
+    // paquete @types nuevo, tienes que listarlo aqui o no existira para el
+    // compilador. "vscode" esta en la lista por eso mismo.
+    "types": ["node", "vscode"],
+
+    "outDir": "out",
+    "rootDir": ".",
+    "strict": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": true,
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
+    "skipLibCheck": true
+  },
+  "include": ["*.ts"],
+  "exclude": ["node_modules", "out"]
+}
